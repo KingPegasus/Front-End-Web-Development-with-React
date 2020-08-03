@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
+import About from './AboutComponent';
 import Menu from './MenuComponent';
 import Contact from './ContactComponent';
 import { DISHES } from '../shared/dishes';
@@ -34,6 +35,13 @@ class Main extends Component {
                 />
             );
         }
+        const AboutPage = () => {
+            return(
+                <About 
+                    leaders={this.state.leaders} 
+                />
+            );
+        }
 
         const DishWithId = ({match}) => {
             return(
@@ -49,6 +57,7 @@ class Main extends Component {
                     <Route path="/home" component={HomePage} />
                     <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
                     <Route path='/menu/:dishId' component={DishWithId} />
+                    <Route path="/aboutus" component={AboutPage} />
                     <Route exact path="/contactus" component={Contact} />
                     <Redirect to="/home" />
                 </Switch>
