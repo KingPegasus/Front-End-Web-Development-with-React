@@ -1,10 +1,11 @@
 import React, { Component}  from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, Button, BreadcrumbItem,
     Modal, ModalHeader, ModalBody,
-    FormGroup, Input, Label } from 'reactstrap';
+    FormGroup, Label } from 'reactstrap';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -73,7 +74,7 @@ class CommentForm extends Component{
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="comment">Comment</Label>
-                            <Control.text model='.comment' type="textarea" id="comment" name="comment" rows="6"
+                            <Control.textarea model='.comment' type="textarea" id="comment" name="comment" rows="6"
                                 innerRef={(input) => this.comment = input}  className="form-control"/>
                         </FormGroup>
                         <Button type="submit" value="submit" color="primary">Submit</Button>
@@ -127,6 +128,27 @@ function RenderComments( {comments, addComment, dishId} ) {
 }
 
 const DishDetail = (props) => {
+    if (props.isLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.errMess) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.dish != null) 
+
+    
     if(props.dish) {
         return (
             <div className="container">
