@@ -1,7 +1,7 @@
 import React, { Component}  from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, Button, BreadcrumbItem,
     Modal, ModalHeader, ModalBody,
-    Form, FormGroup, Input, Label } from 'reactstrap';
+    FormGroup, Input, Label } from 'reactstrap';
 import Moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
@@ -26,8 +26,9 @@ class CommentForm extends Component{
     }
 
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        this.toggleModal();
+        console.log(values);
+        this.props.addComment(this.props.dishId, values.rating, values.yourname, values.comment);        
     }
 
     render(){
@@ -42,14 +43,14 @@ class CommentForm extends Component{
                     <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                         <FormGroup>
                             <Label htmlFor="rating">Rating</Label>
-                            <Input type="select" id='rating' name="rating" 
-                                innerRef={(input) => this.rating = input}>
+                            <Control.select model='.rating' type="select" id='rating' name="rating" 
+                                innerRef={(input) => this.rating = input} className="form-control">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
                                 <option>5</option>
-                            </Input>
+                            </Control.select >
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="yourname">Your Name</Label>
@@ -72,8 +73,8 @@ class CommentForm extends Component{
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="comment">Comment</Label>
-                            <Input type="textarea" id="comment" name="comment" rows="6"
-                                innerRef={(input) => this.comment = input}  />
+                            <Control.text model='.comment' type="textarea" id="comment" name="comment" rows="6"
+                                innerRef={(input) => this.comment = input}  className="form-control"/>
                         </FormGroup>
                         <Button type="submit" value="submit" color="primary">Submit</Button>
                     </LocalForm>
@@ -98,7 +99,7 @@ function RenderDish( {dish} ) {
     );
 }
 
-function RenderComments( {comments} ) {
+function RenderComments( {comments, addComment, dishId} ) {
     Moment.locale('en');
     if(comments != null){ 
         const comp = comments.map((comm) => {
@@ -114,7 +115,7 @@ function RenderComments( {comments} ) {
             <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
                 {comp}
-                <CommentForm />
+                <CommentForm dishId={dishId} addComment={addComment}/>
             </div>
         );
     }
@@ -141,7 +142,9 @@ const DishDetail = (props) => {
                 </div>
                 <div className="row">
                     <RenderDish dish={props.dish} />
-                    <RenderComments comments={props.comments} />
+                    <RenderComments comments={props.comments} 
+                        addComment={props.addComment} 
+                        dishId={props.dish.id}/>
                 </div>
             </div>
         );
