@@ -112,15 +112,14 @@ function RenderComments( {comments, postComment, dishId} ) {
     if(comments != null){ 
         const comp = comments.map((comm) => {
             const date = Moment(comm.date).format('MMM D, YYYY')
-                return (
-                    <Fade in>
-                        <li key={comm.id} className="list-unstyled">
-                            <p>{comm.comment}</p>
-                            <p>-- {comm.author} , {date}</p>
-                        </li>
-                    </Fade>
-                );
-            
+            return (
+                <Fade in>
+                    <li key={comm.id} className="list-unstyled">
+                        <p>{comm.comment}</p>
+                        <p>-- {comm.author} , {date}</p>
+                    </li>
+                </Fade>
+            );
         });
         return (
             <div className="col-12 col-md-5 m-1">
@@ -184,7 +183,6 @@ const DishDetail = (props) => {
                 </div>
             </div>
         );
-
     }
     else {
         return(<div></div>);
